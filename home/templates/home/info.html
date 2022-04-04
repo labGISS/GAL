@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}
+    Explore
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'home/css/info.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/common.css' %}">
+{% endblock css %}
+
+{% block navigation-buttons %}
+    <div class="pure-g">
+        <div class="navigation-button-wrapper pure-u-1-2">
+            <a class="navigation-button" id="navigation-button-vis" href="{% url 'explore' %}">Visualizzazione</a>
+        </div>
+        <div class="navigation-button-wrapper pure-u-1-2">
+            <a class="navigation-button" id="navigation-button-info" href="{% url 'info' %}">Info</a>
+        </div>
+    </div>
+{% endblock navigation-buttons %}
+
+{% block content %}
+    <div id="container" class="info-container">
+        <div class="sections">
+            <section id="home">
+                <div class="pure-g" style="flex: 1">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/unisa.png' %}" alt="logo-unisa">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/eu.png' %}" alt="logo-eu">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/ri.png' %}" alt="logo-ri">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/rc1.png' %}" alt="logo-rc1">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/rc2.png' %}" alt="logo-rc2">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/gal.png' %}" alt="logo-gal">
+                    <img class="pure-u-1-4 pure-md-1-8 logo-img" src="{% static 'home/images/logos/lea.png' %}" alt="logo-lead">
+                </div>
+
+                <h1 class="red">
+                    Valorizzazione della Filiera della Nocciola “Tonda di Giffoni” con ausilio di tecnologie informatiche
+                </h1>
+            </section>
+            <section id="partner">
+                <h3 class="section-title">
+                    Partner del progetto
+                </h3>
+                <div class="section-content pure-g">
+                    {% for partner, image in project_partners %}
+                        <div class="pure-u-1-2 pure-u-md-1-3 flex-center flex-column" style="align-content: center">
+                            <img class="logo-img" src="{{ image }}" alt="">
+                            <span style="font-size: 12px">{{ partner }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+            <section id="air">
+                <h3 class="section-title">
+                    Area di intervento
+                </h3>
+                <div class="section-content">
+                    <p>
+                        La proposta interessa i 9 comuni del GAL Colline Salernitane (Acerno, Castiglione dei Genovesi,
+                        Giffoni Sei Casali, Giffoni Valle Piana, Montecorvino Pugliano, Montecorvino Rovella,
+                        Olevano sul Tusciano, San Cipriano Picentino, San Mango Piemonte) ed è stata estesa ai comuni di
+                        Baronissi, Calvanico e Fisciano così da considerare l’intero areale della “Nocciola di Giffoni IGP”
+                    </p>
+                    <p>
+                        Gli attori che operano lungo le fasi di produzione, trasformazione e/o confezionamento e intermediazione della filiera sono 200:
+                    </p>
+                    <ul>
+                        <li> <span class="red">172</span> sono aziende agricole con una SAU iscritta, complessiva, pari a <span class="red">604,4</span> ha;</li>
+                        <li> <span class="red">20</span> sono aziende di trasformazione e/o confezionamento, delle quali
+                            5 operano all’interno dell’areale di produzione dell’IGP e sono localizzate nell’area del GAL Colline Salernitane,
+                            15 operano all’esterno dell’areale di produzione IGP;</li>
+                        <li> <span class="red">8</span> sono agenzie di intermediazione.</li>
+                    </ul>
+                    <p>
+                        L’indagine condotta ha avuto come oggetto l’analisi dei fabbisogni delle aziende agroindustriali
+                        produttrici e trasformatrici della nocciola Tonda di Giffoni mediante la somministrazione di un
+                        questionario, con lo scopo di ottenere un quadro chiaro della struttura della filiera.
+                        In particolare, l’indagine ha riguardato le aziende agricole operanti all’interno dell’area del
+                        GAL Colline Salernitane e le aziende di trasformazione, operanti sia all’interno che all’esterno dell’area del GAL.
+                    </p>
+                </div>
+            </section>
+            <section id="objectives">
+                <h3 class="section-title">
+                    Obiettivi del progetto
+                </h3>
+                <div class="section-content">
+                    <ul>
+                        <li>Mappa della vocazionalità territoriale alla corilicoltura del GAL “Colline Salernitane”;</li>
+                        <li>Progettazione di una rete di monitoraggio dei parametri ambientali per la costruzione di un
+                            supporto alle decisioni per la sostenibilità di un processo produttivo costituito da
+                            tecniche di coltivazione in grado di rispondere alle criticità emergenti, rispettose dell’ambiente,
+                            efficaci per la mitigazione climatica e per il mantenimento della biodiversità;
+                        </li>
+                        <li>Procedure utilizzabili per la definizione di percorsi di qualità certificata e biologici;</li>
+                        <li>Un sistema prototipale di supporto alle decisioni, facilmente trasferibile in quanto
+                            agevolmente
+                            replicabile e adattabile in altri contesti geografici e per altre produzioni agricole del
+                            GAL
+                            Colline Salernitane;
+                        </li>
+                        <li>Trasferimento delle innovazioni attraverso la divulgazione e disseminazione dei risultati
+                            dello
+                            studio orientato anche le piccole aziende.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div>
+            <nav class="navbar">
+                <ul>
+                    <li><a class="active" href="#home">Home</a></li>
+                    <li><a href="#partner">Partner del progetto</a></li>
+                    <li><a href="#air">Area di intervento</a></li>
+                    <li><a href="#objectives">Obiettivi del progetto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'home/js/info.js' %}"></script>
+    <script>
+        initPage()
+    </script>
+{% endblock scripts %}

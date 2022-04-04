@@ -1,0 +1,42 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    max-width:100%;
+    overflow: hidden;
+}
+
+.content {
+    width: 100%;
+    height: calc(100% - 60px);
+}
+
+.header {
+    display: flex;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.logo {
+    height: 4rem;
+    width: 4rem ;
+}
+
+.box-shadow {
+    box-shadow: rgba(0, 0, 0, 0.11) 0 0 1px 1px;;
+}
+
+/*.navigation-buttons {*/
+/*    margin-left: auto;*/
+/*    flex: 1;*/
+/*}*/
+
+html, body {
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 0;
+}

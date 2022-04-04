@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_title %}
+    Explore
+{% endblock %}
+
+{% block css %}
+    <!-- Leaflet css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <!-- leaflet-coverage css -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet-coverage@0.7/leaflet-coverage.css">
+
+    <link rel="stylesheet" href="{% static 'home/css/explore.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/common.css' %}">
+{% endblock css %}
+
+{% block navigation-buttons %}
+    <div class="pure-g">
+        <div class="navigation-button-wrapper pure-u-1-2">
+            <a class="navigation-button" id="navigation-button-vis" href="{% url 'explore' %}">Visualizzazione</a>
+        </div>
+        <div class="navigation-button-wrapper pure-u-1-2">
+            <a class="navigation-button" id="navigation-button-info" href="{% url 'info' %}">Info</a>
+        </div>
+    </div>
+{% endblock navigation-buttons %}
+
+{% block content %}
+    <div class="container">
+        <div class="pure-g">
+            <div class="pure-u-md-2-3 pure-u-1">
+                <div class="leaflet-screen">
+                    <div class="loading-overlay">
+                        <div class="spinner-border text-primary spinner" role="status">
+                            {#                            <span class="visually-hidden">Loading...</span>#}
+                        </div>
+                    </div>
+                    <div id="map"></div>
+                </div>
+                <div class="bottom-controls flex-center flex-column">
+                    <div class="themes-row flex-center flex-row">
+                        <span style="padding: 0 5px">TEMATICHE</span>
+                        <div class="vl"></div>
+                        <div class="flex-center flex-row" style="min-width: 156px">
+                            {% for theme_id, theme_name in collections.themes %}
+                                {% with 'home/images/icons/themes/'|add:theme_id|add:'.svg' as logo_static %}
+                                    <div class="theme-icon-wrapper" data-tooltip="{{ theme_name }}" data-tooltip-location="bottom">
+                                        <img class="theme-icon" src="{% static logo_static %}" alt="{{ theme_name }}"
+                                             data-url="{% url 'get_map_data' %}" data-mapid="{{ theme_id }}" data-mapname="{{ theme_name }}">
+                                    </div>
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+
+                        {#                        <img src="{% static 'gal_site/images/icons.png' %}" alt="logo" style=" width: 400px">#}
+                        <div class="vl"></div>
+                        <span class="more"></span>
+                    </div>
+                    <div class="pure-g" style="width: 100%; padding: 10px" >
+                        <div class="pure-u-2-3 flex-center">
+                            {#                            <div class="progress">#}
+                            {#                                <header>&nbsp;</header>#}
+                            {#                                <div class="bar">#}
+                            {#                                    <div class="percent">&nbsp;</div>#}
+                            {#                                    <div class="ref" data-ref="2012" style="left:10%"></div>#}
+                            {#                                    <div class="ref" data-ref="2013" style="left:20%"></div>#}
+                            {#                                    <div class="ref" data-ref="2014" style="left:30%"></div>#}
+                            {#                                    <div class="ref" data-ref="2015" style="left:40%"></div>#}
+                            {#                                    <div class="ref" data-ref="2016" style="left:50%"></div>#}
+                            {#                                    <div class="ref" data-ref="2017" style="left:60%"></div>#}
+                            {#                                    <div class="ref" data-ref="2018" style="left:70%"></div>#}
+                            {#                                    <div class="ref" data-ref="2019" style="left:80%"></div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            <div class="years-selection">
+                                <div class="range">
+                                    <input type="range" min="2018" max="2021" value="2021">
+                                    <div class="ticks">
+                                        <!-- You could generate the ticks based on your min, max & step values. -->
+                                        <span class="tick">2018</span>
+                                        <span class="tick">2019</span>
+                                        <span class="tick">2020</span>
+                                        <span class="tick">2021</span>
+                                    </div>
+                                </div>
+                                {#                                <div class="range">#}
+{#                                    <input type="range" min="1" max="7" value="7">#}
+{#                                </div>#}
+{##}
+{#                                <ul class="range-labels">#}
+{#                                    <li>Today</li>#}
+{#                                    <li>2 days</li>#}
+{#                                    <li>3 days</li>#}
+{#                                    <li>4 days</li>#}
+{#                                    <li>5 days</li>#}
+{#                                    <li>6 days</li>#}
+{#                                    <li class="active selected">7 days</li>#}
+{#                                </ul>#}
+                            </div>
+                        </div>
+                        <div class="pure-u-1-3">
+                            <div style="padding: 10px">
+                                <button id="searchBtn" class="btn" style="border: none">
+                                    <img src="{% static 'gal_site/images/search-line.svg' %}">
+                                    <span> RICERCA NELLA VISUALIZZAZIONE</span>
+                                </button>
+                                <div id="findbox"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="side-controls pure-u-md-1-3 pure-u-1">
+                <div class="side-controls-content">
+                    <div class="side-controls-section">
+                        <label for="mapSelection" class="padded-label-tb">Seleziona una mappa</label>
+                        <select id="mapSelection" name="mapSelection" multiple data-url="{% url 'get_map_data' %}">
+                            {% for group_name, category_collections in collections.maps.items %}
+                                <optgroup label="{{ group_name }}">
+                                    {% for id, title in category_collections %}
+                                        <option value="{{ id }}">{{ title }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr class="side-controls-separator">
+                    <div class="side-controls-section last">
+                        <div class="flex-center flex-column">
+                            <h4 style="color: var(--text-color-red)">VISUALIZZAZIONI</h4>
+                            <div>
+                                <button class="btn btn-stacked active">
+                                    <span>Geo Map</span>
+                                    <img alt="globe" src="{% static 'gal_site/images/globe-line.svg' %}"/>
+                                </button>
+                                <button class="btn btn-stacked">
+                                    <span>Grafici</span>
+                                    <img alt="graph" src="{% static 'gal_site/images/analytics-graph-svgrepo-com.svg' %}"/>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{#                <div class="side-controls-footer" style="flex: 1">#}
+{#                    <div>#}
+{#                        <button class="btn">#}
+{#                            <img style="transform: scale(0.2)" alt="download" src="{% static 'gal_site/images/download-svgrepo-com.svg' %}"/>#}
+{#                            <span>Data Download</span>#}
+{#                        </button>#}
+{##}
+{#                        <button class="btn">#}
+{#                            <img style="transform: scale(0.2)" alt="download image" src="{% static 'gal_site/images/image-download-svgrepo-com.svg' %}"/>#}
+{#                            <span>Image Download</span>#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+    <!-- leaflet-coverage js -->
+    {#    <script src="https://cdn.jsdelivr.net/npm/covutils@0.6/covutils-lite.min.js"></script>#}
+    {#    <script src="https://cdn.jsdelivr.net/npm/covjson-reader@0.16/covjson-reader.min.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/covutils@0.6/covutils.min.js"></script>
+    {#    <script src="https://cdn.jsdelivr.net/npm/leaflet-coverage@0.7/leaflet-coverage.min.js"></script>#}
+    <script src="{% static 'vendor/js/covjson-reader.src.js' %}"></script>
+    <script src="{% static 'vendor/js/leaflet-coverage.src.js' %}"></script>
+
+{#    <script src="https://unpkg.com/geotiff@1.0.0-beta.7/dist/geotiff.bundle.js"></script>#}
+{#    <script src="https://unpkg.com/plotty@0.4.4/dist/plotty.min.js"></script>#}
+{#    <script src="{% static 'vendor/js/leaflet-geotiff.js' %}"></script>#}
+{#    <script src="https://unpkg.com/georaster"></script>#}
+{#    <script src="https://unpkg.com/georaster-layer-for-leaflet/dist/georaster-layer-for-leaflet.min.js"></script>#}
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-search@3.0.2/dist/leaflet-search.src.min.js"></script>
+
+    <script src="{% static 'home/js/explore.js' %}"></script>
+    <script>
+        initPage();
+    </script>
+{% endblock scripts %}

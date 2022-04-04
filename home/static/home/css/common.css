@@ -1,0 +1,31 @@
+.navigation-button:hover {
+    cursor: pointer;
+    color: var(--text-color-red-dark);
+}
+
+.navigation-button {
+    height: 48px;
+    font-size: 1rem;
+    font-weight: 100;
+    padding: 4px 6px 8px 6px;
+    margin: 0;
+    text-transform: uppercase;
+    color: rgb(58, 65, 72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.2s ease 0s;
+    text-decoration: none;
+}
+
+.navigation-button:after {
+    border-bottom: 1px solid var(--form-control-color);
+}
+
+.navigation-button.selected {
+    border-bottom: 8px solid var(--text-color-red);
+    padding-bottom: 1px;
+    color: var(--text-color-red);
+}
+
