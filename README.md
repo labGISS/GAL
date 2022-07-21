@@ -9,7 +9,7 @@ Per configurare il server, vedere cartella `server`.
 Per eseguire il client, dopo aver creato un virtual environment (`venv`):
 
 ```
-   pip install -r requirements
+   pip install -r requirements.txt
    python manage.py runserver
 ```
 
@@ -21,6 +21,7 @@ piattaforma di esplorazione delle mappe.
 Il collegamento al server pygeoapi è implementato dal metodo `get_map_data` in `home/views.py`
 
 ## Librerie utilizzate
+- [Django](https://www.djangoproject.com/)
 - [jQuery](https://jquery.com/)
 - [Pure Css](https://github.com/pure-css/pure)
 - [jquery-multi-select](https://github.com/mysociety/jquery-multi-select) (con modifiche)
